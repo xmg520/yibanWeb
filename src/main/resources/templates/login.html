@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>信息登陆</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body class="layui-bg-cyan">
+
+<div class="admin-login-block">
+    <div class="admin-login-text">
+        <span>电信通信后台管理</span>
+    </div>
+    <div class="login-font">
+        <span>系统登录</span>
+    </div>
+    <div class="admin-login-form">
+        <form class="layui-form" action="" lay-filter="login">
+            <div class="layui-form-item">
+                <div class="layui-input-block admin-login-input">
+                    <input id="username" type="text" name="userName" required lay-verify="required"
+                           placeholder="登录账号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block admin-login-input">
+                    <input id="password" type="password" name="passWord" required lay-verify="required"
+                           placeholder="登录密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block admin-login-input">
+                    <button id="loginBtn" class="layui-btn admin-login-btn" lay-submit lay-filter="login">登录</button>
+                </div>
+            </div>
+        </form>
+        <div class="admin-login-copy">
+            <p>&copy; 2019 电信通信</p>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/layui/layui.all.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-1.8.3.js}"></script>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+
+        form.on('submit(login)', function (data) {
+            $.ajax({
+                data: data.field,
+                url: "/login",
+                success: function (data) {
+                    if (data.state == 200) {
+                        location.href = "/admin/user";
+                        // location.href = "page/main.html";
+                    } else {
+                        layer.msg('用户名或者密码错误', {anim: 6, icon: 5});
+                    }
+                },
+                type: "POST",
+                dataType: "json"
+            });
+
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    });
+
+</script>
+</body>
+</html>

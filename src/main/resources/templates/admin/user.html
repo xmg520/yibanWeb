@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>大佬名单</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" />
+</head>
+
+<body class="childrenBody">
+
+<blockquote class="layui-elem-quote layui-quote-nm">
+    <div style="text-align: center; padding:1% 0;">
+        <p style="font-size: 20px; font-weight: 300; color: #999;">已入账大佬</p>
+    </div>
+</blockquote>
+<a href="/dalao" target="_blank"><button type="button" class="layui-btn">在线签到</button></a>
+<a href="/noload" target="_blank"><button type="button" class="layui-btn layui-btn-normal">大佬记录</button></a>
+<table class="layui-hide" id="test"></table>
+
+
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-1.8.3.js}"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+
+        //执行一个 table 实例
+        table.render({
+            elem: '#test'
+            , height: 600
+            , headers: {'educoder': 'sasasas'}
+            , limit: 10
+            , method: 'post'
+            , limits: [10, 20, 30]
+            , url: '/findAllMem' //数据接口
+            , page: true //开启分页
+            , cols: [
+                [ //表头
+                {field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left'}
+                , {field: 'account', title: '学号', width: 200}
+                , {field: 'passwd', title: '密码', width: 200}
+                , {field: 'name', title: '姓名', width: 200}
+                , {field: 'city', title: '所在城市', width: 200}
+                ]
+            ]
+            , done: function (res, curr, count) {
+                //如果是异步请求数据方式，res即为你接口返回的信息。
+                //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                // console.log(res);
+                //得到当前页码
+                // console.log(curr);
+                //得到数据总量
+                // console.log(count);
+                var limit = res.data.length
+                var state = {title: '', url: window.location.href};
+                history.pushState(state, '', 'ainiaini.html?p=' + curr + "&l=" + limit);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

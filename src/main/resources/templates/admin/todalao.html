@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>在线签到</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" />
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body class="admin-login-block layui-bg-cyan">
+
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">输入学号：</label>
+        <div class="layui-input-block">
+            <input type="text" name="username" lay-verify="title" autocomplete="off" placeholder="学号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-1.8.3.js}"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+<script>
+
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+
+
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            $.ajax({
+                url: "/todalao",
+                type: "post",
+                data: data.field,
+                success: function(s) {
+                    console.log(s)
+                    if (s == "Applied today") {
+                        //加载层-风格3
+                        layer.load(2);
+                        setTimeout(function () {
+                            layer.closeAll('loading');
+                        }, 1500);
+                        layer.msg("已签到，无需再签", function () {
+                            location.href = "/admin/user";
+                        });
+                    } else {
+                        layer.msg("签到成功，明天记得按时签到", function () {
+                            location.href = "/";
+                        });
+                    }
+                },
+                error:function(){
+                    layer.msg("接口异常!", function () {});
+                }
+            });
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // })
+            return false;
+        });
+
+
+    });
+</script>
+
+</body>
+</html>

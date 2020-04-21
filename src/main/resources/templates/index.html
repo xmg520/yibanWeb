@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>健康信息上报大佬解决方案</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/toastr.css" />
+    <link rel="icon" href="img/logo.png" type="image/x-icon" />
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="top col-xs-12">
+                <div class="title">
+                    <div class="logo"></div>
+                    <div class="title-font-top text-center">湖南网络工程职业学院</div>
+                    <div class="title-font-center text-center">健康信息上报大佬解决方案</div>
+                    <div class="line"></div>
+                    <div class="title-font-center2 text-center">须信功名富贵，长与少年期</div>
+                    <div class="title-font-bottom text-center">一定要在获得他人同意下使用!</div>
+                </div>
+                <div class="buttons">
+                    <button type="button" id="signIn" class="btn btn-info " data-toggle="modal"
+                        data-target="#myModa3">大佬席位报名</button>
+                    <button type="button" id="editSignIn" class="btn btn-info" data-toggle="modal"
+                        data-target="#myModa4">查看大佬信息</button>
+                </div>
+                <div id="arrow"></div>
+            </div>
+        </div>
+
+        <div class="row explain">
+            <div class="col-md-10 col-md-offset-1 col-xs-12">
+                <div class="explain-title text-center">
+                    使用免责说明
+                </div>
+                <div class="line"></div>
+                <div class="info">
+                    <ul>
+                        <li>1、首先本系统不负责保护用户数据，但是绝对不会恶意泄露用户数据;</li>
+                        <br>
+                        <li>
+                            2、本系统设计的初衷是因为提交健康信息系统会有bug，有时需要重复提交，
+                            在减少工作量同时不错报用户健康信息的前提下(本系统会记录区分忘记上报用户与故意不上报用户)本系统诞生;
+                        </li>
+                        <br>
+                        <li>
+                            3、本系统仅为娱乐使用，侵权，侵利，侵罪必删！
+                        </li>
+                    </ul>
+                    <br>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row bottom">
+            <div class="col-md-8 col-md-offset-2 col-xs-12">
+                <div class="col-sm-3">
+                    <div class="logo2"></div>
+                    <div class="logo-title text-center">健康信息查漏补缺系统 </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="space-35"></div>
+                    <h4>服务器提供单位</h4>
+                    <hr>
+                    <p>网院计算机协会</p>
+                </div>
+                <div class="col-sm-3">
+                    <div class="space-35"></div>
+                    <h4>联系我们</h4>
+                    <hr>
+                    <p>Email:admin@wyjsjxh.com</p>
+                </div>
+                <div class="col-sm-2">
+                    <div class="space-35"></div>
+                    <div class="code"></div>
+                    <div class="text-center">扫一扫关注计算机协会微信公众号</div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p class="text-center">Copyright &#169; 2020 计算机协会. All rights reserved. 计算机协会技术支持</p>
+            <p class="text-center">湘ICP备15003037号</p>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">添加信息</h4>
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-8 col-sm-offset-2">
+                        <div id="signInFrom">
+                            <form class="form-horizontal">
+                                <div class="form-group  has-feedback" id="studentId-group">
+                                    <label class="control-label col-sm-3" for="StudentId">学号</label>
+
+                                    <div class="col-sm-9">
+                                        <input id="studentId" name="StudentId" type="text" placeholder=""
+                                            class=" form-control">
+                                        <span class="glyphicon  form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group  has-feedback" id="name-group">
+                                    <label class="control-label col-sm-3" for="name">姓名</label>
+                                    <div class="col-sm-9">
+                                        <input id="name" name="name" type="text" placeholder="" class="form-control">
+                                        <span class="glyphicon  form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group  has-feedback" id="tel-group">
+                                    <label class="control-label col-sm-3" for="tel">手机号码</label>
+                                    <div class="col-sm-9">
+                                        <input id="tel" name="tel" type="text" placeholder="用于登陆易班"
+                                            class="form-control">
+                                        <span class="glyphicon  form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group  has-feedback" id="qq-group">
+                                    <label class="control-label col-sm-3" for="qq">易班密码</label>
+                                    <div class="col-sm-9">
+                                        <input id="qq" name="qq" type="text" placeholder="" class="form-control">
+                                        <span class="glyphicon  form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="grade">年级</label>
+                                    <div class="col-sm-3">
+                                        <select id="grade" name="grade" class="input-control form-control">
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="department">所在省份</label>
+                                    <div class="col-sm-5">
+                                        <select id="department" name="department" class="input-control form-control">
+                                            <option value="湖南省">湖南省</option>
+                                            <option value="广东省">广东省</option>
+                                            <option value="河北省">河北省</option>
+                                            <option value="山西省">山西省</option>
+                                            <option value="辽宁省">辽宁省</option>
+                                            <option value="吉林省">吉林省</option>
+                                            <option value="黑龙江省">黑龙江省</option>
+                                            <option value="江苏省">江苏省</option>
+                                            <option value="浙江省">浙江省</option>
+                                            <option value="安徽省">安徽省</option>
+                                            <option value="福建省">福建省</option>
+                                            <option value="江西省">江西省</option>
+                                            <option value="山东省">山东省</option>
+                                            <option value="河南省">河南省</option>
+                                            <option value="湖北省">湖北省</option>
+                                            <option value="海南省">海南省</option>
+                                            <option value="四川省">四川省</option>
+                                            <option value="贵州省">贵州省</option>
+                                            <option value="云南省">云南省</option>
+                                            <option value="陕西省">陕西省</option>
+                                            <option value="甘肃省">甘肃省</option>
+                                            <option value="青海省">青海省</option>
+                                            <option value="台湾省">台湾省</option>
+                                            <option value="北京市">北京市</option>
+                                            <option value="天津市">天津市</option>
+                                            <option value="上海市">上海市</option>
+                                            <option value="重庆市">重庆市</option>
+                                            <option value="香港特别行政区">香港特别行政区</option>
+                                            <option value="澳门特别行政区">澳门特别行政区</option>
+                                            <option value="内蒙古自治区">内蒙古自治区</option>
+                                            <option value="广西壮族自治区">广西壮族自治区</option>
+                                            <option value="西藏自治区">西藏自治区</option>
+                                            <option value="宁夏回族自治区">宁夏回族自治区</option>
+                                            <option value="新疆维吾尔自治区">新疆维吾尔自治区</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <div class="bn">
+                                        <button type="button" class="btn btn-info" id="submit"
+                                            onclick="apply()">提交报名</button>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModa2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="myModalLabe2">提示</h4>
+                </div>
+                <h3 class="text-center" id="modal-text">模态框。</h3>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModa3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="myModalLabe3"></h4>
+                </div>
+                <!--<h3 class="text-center">报名已截止啦，已报名的小伙伴现场签到确认参赛信息后可通过点击右方按钮查看准考信息。</h3>-->
+                <div class="row">
+                    <div class="warn col-sm-10 col-sm-offset-1">
+                        1.使用过程中如遇任何问题，可联系管理员QQ：903563099<br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="bn2">
+                        <button type="button" class="btn btn-info" style="display: none;" id="applyBtn"
+                            onclick="$('#myModa3').modal('hide');$('#myModal').modal('show');">确认</button>
+                    </div>
+                    <h4 class="text-center" id="waitText">请先仔细阅读以上信息(3)</h4>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModa4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="myModalLabe4">输入查看信息</h4>
+                </div>
+                <div id="look">
+                    <div class="row">
+                        <label class="col-sm-3 col-sm-offset-2 text-right">账号:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" id="look-name">
+                        </div>
+                    </div>
+                    <div class="space-35"></div>
+                    <div class="row">
+                        <label class="col-sm-3 col-sm-offset-2 text-right">密码:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" id="look-id">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="tip" class="col-sm-7 col-sm-offset-5" style="color: red;padding: 10px;"></div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <div id="look-footer">
+                        <div class="bn2">
+                            <button type="button" class="btn btn-info" id="lookContestInfo"
+                                onclick="lookContestInfo()">查看</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/style.js"></script>
+<script src="js/requestServer.js"></script>
+<script src="js/toastr.js"></script>
+<script src="js/main.js"></script>
+
+</html>
