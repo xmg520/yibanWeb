@@ -11,12 +11,10 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -52,6 +50,12 @@ public class UserController {
     public String user(){
         return "admin/user";
     }
+
+//    @RequestMapping("/admin/user1")
+//    public String user1(){
+//        return "/admin/user3";
+//    }
+
 
 
     @RequestMapping("/noload")
@@ -103,12 +107,6 @@ public class UserController {
     }
 
 
-
-    @ResponseBody
-    @RequestMapping("/todalao")
-    public String todalao(String username) throws IOException {
-        return JsoupUtill.login(username);
-    }
 
 
 }

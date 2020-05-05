@@ -34,4 +34,20 @@ public class MeberServiceImpl implements MeberService {
     public boolean saveMemBer(String studentId, String name, String ybpasswd, String department) {
         return memberDao.saveMemBer(studentId,name,ybpasswd,department);
     }
+
+    @Override
+    public boolean updateMemBer(Member member) {
+        return memberDao.updateMemBer(member);
+    }
+
+    @Override
+    public boolean isDel(Integer commentId, Integer isupload) {
+        return memberDao.isDel(commentId,isupload);
+    }
+
+    @Override
+    public boolean clear(Integer commentId) {
+        return memberDao.clear(commentId);
+    }
+
 }

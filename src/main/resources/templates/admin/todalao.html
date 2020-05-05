@@ -41,7 +41,6 @@
                 type: "post",
                 data: data.field,
                 success: function(s) {
-                    console.log(s)
                     if (s == "Applied today") {
                         //加载层-风格3
                         layer.load(2);
@@ -53,7 +52,7 @@
                         });
                     } else {
                         layer.msg("签到成功，明天记得按时签到", function () {
-                            location.href = "/";
+                            location.href = "/dalao";
                         });
                     }
                 },

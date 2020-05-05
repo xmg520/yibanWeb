@@ -2,6 +2,7 @@ package com.mxz.yiban.controller;
 
 import com.mxz.yiban.pojo.Member;
 import com.mxz.yiban.service.MeberService;
+import com.mxz.yiban.utill.JsoupUtill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -35,8 +37,59 @@ public class MemberController {
     }
 
     @ResponseBody
+    @RequestMapping("/updateMem")
+    public Map<String,Object> updateMember(Integer id,String account, String name,String passwd,String city,Integer isupload){
+        Map<String,Object> map = new HashMap<>();
+        if (passwd == null){
+            passwd = "123456";
+        }
+        Member member = new Member(id,account,passwd,name,city,isupload);
+        boolean result = meberService.updateMemBer(member);
+        if (result){
+            map.put("state","200");
+        }else {
+            map.put("state","500");
+        }
+        return map;
+    }
+
+    @ResponseBody
+    @RequestMapping("/isDel")
+    public Map<String,Object> isDel(Integer commentId,Integer isupload){
+        Map<String,Object> map = new HashMap<>();
+        boolean result = meberService.isDel(commentId,isupload);
+        if (result){
+            map.put("state","200");
+        }else {
+            map.put("state","500");
+        }
+        return map;
+    }
+
+    @ResponseBody
+    @RequestMapping("/clear")
+    public Map<String,Object> clear(Integer commentId){
+        Map<String,Object> map = new HashMap<>();
+        boolean result = meberService.clear(commentId);
+        if (result){
+            map.put("state","200");
+        }else {
+            map.put("state","500");
+        }
+        return map;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/todalao")
+    public String todalao(String username) throws IOException {
+        return JsoupUtill.login(username);
+    }
+
+
+    @ResponseBody
     @RequestMapping(value = {"/findAllMem"})
-    public Map<String,Object> findAllUser(HttpServletRequest request, @RequestParam(defaultValue = "1")int page, @RequestParam(defaultValue = "10")int limit, Model model){
+    public Map<String,Object> findAllUser(HttpServletRequest request, @RequestParam(defaultValue = "1")int page, @RequestParam(defaultValue = "20")int limit, Model model){
         Map<String,Object> map = new HashMap<>();
 
         //设置简单反爬，python请求头 或 访问速度过快 提示页面访问过于频繁
@@ -61,8 +114,8 @@ public class MemberController {
             return map;
         }
 
-        //请求单页数据超过30条
-        if (limit > 30){
+        //请求单页数据超过60条
+        if (limit > 60){
             map.put("msg", "Web page visits are too frequent");
             return map;
         }

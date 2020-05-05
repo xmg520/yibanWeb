@@ -2,11 +2,33 @@ package com.mxz.yiban.pojo;
 
 public class Member {
 
+
     private Integer id;
     private String account;
     private String passwd;
     private String name;
     private String city;
+    private Integer isupload;
+
+    public Member(Integer id, String account, String passwd, String name, String city, Integer isupload) {
+        this.id = id;
+        this.account = account;
+        this.passwd = passwd;
+        this.name = name;
+        this.city = city;
+        this.isupload = isupload;
+    }
+
+    public Member() {
+    }
+
+    public Integer getIsupload() {
+        return isupload;
+    }
+
+    public void setIsupload(Integer isupload) {
+        this.isupload = isupload;
+    }
 
     public Integer getId() {
         return id;

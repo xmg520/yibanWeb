@@ -16,4 +16,10 @@ public interface MeberService {
     Integer dataLogCount();
 
     boolean saveMemBer(String studentId, String name,String ybpasswd,String department);
+
+    boolean updateMemBer(Member member);
+
+    boolean isDel(Integer commentId, Integer isupload);
+
+    boolean clear(Integer commentId);
 }
