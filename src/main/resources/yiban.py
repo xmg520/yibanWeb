@@ -5,7 +5,7 @@ __author__ = 'Mzx'
 import requests,pymysql,time,json
 
 # 数据库连接信息
-conn = pymysql.connect(host='118.31.22.202',user='root',password='qweqwe520',database='yiban',port=9527)
+conn = pymysql.connect(host='118.31.22.111',user='1234',password='1234',database='yiban',port=9527)
 
 cursor = conn.cursor()
 
