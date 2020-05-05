@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en"xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>大佬名单</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" />
+</head>
+
+<body class="childrenBody">
+
+<blockquote class="layui-elem-quote layui-quote-nm">
+    <div style="text-align: center; padding:1% 0;">
+        <p style="font-size: 20px; font-weight: 300; color: #999;">已入账大佬</p>
+    </div>
+</blockquote>
+<div id="bttomTest" style="text-align: center">
+    <a href="/dalao" target="_blank"><button type="button" class="layui-btn">在线签到</button></a>
+    <a href="/noload" target="_blank"><button type="button" class="layui-btn layui-btn-normal">大佬记录</button></a>
+</div>
+<table class="layui-hide" id="test"></table>
+
+
+<div class="layui-card-body">
+    <table id="acmCommentList" lay-filter="acmCommentList"></table>
+</div>
+
+<script type="text/html" id="isDeletedTool">
+    {{#  if(d.isupload == 1){ }}
+    <input type="checkbox" name="isupload" lay-skin="switch" value="{{d.id}}"
+           lay-text="不帮签|已帮签" lay-filter="isupload" checked>
+    {{#  } else { }}
+    <input type="checkbox" name="isupload" lay-skin="switch" value="{{d.id}}"
+           lay-text="不帮签|已帮签" lay-filter="isupload">
+    {{#  } }}
+</script>
+
+<script type="text/html" id="acmListBar">
+    <a class="layui-btn layui-btn-sm " lay-event="toUp">签到</a>
+    <a class="layui-btn layui-btn-sm layui-btn-danger" lay-event="clear">删除</a>
+</script>
+
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-1.8.3.js}"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+
+
+<script type="text/javascript" th:inline="none">
+    layui.use(['form', 'layer', 'table'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.jquery,
+            table = layui.table;
+
+
+        var tableIns = table.render({
+            elem: '#acmCommentList',
+            id: "acmCommentTable",
+            url: '/findAllMem',
+            title: '评论列表',
+            page: true,
+            height: "full-110",
+            toolbar: true,
+            limits: [10,30,60],
+            cols: [[
+                {type: 'checkbox'},
+                {field: 'id', title: 'ID', width:80, sort: true}
+                , {field: 'account', title: '学号', minWidth:120, sort: true, edit: 'text'}
+                , {field: 'passwd', title: '密码', edit: 'text', width: 150}
+                , {field: 'name', title: '姓名', width:80, edit: 'text'}
+                , {field: 'city', title: '所在城市', edit: 'text', minWidth: 100}
+                , {field: 'isupload', title: '是否帮忙签到', align: 'center',sort:"true" , unresize: "true",templet: '#isDeletedTool'},
+                {title: '操作', align: "center", unresize: "true", toolbar: "#acmListBar"}
+            ]]
+        });
+
+
+        table.on('edit(acmCommentList)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            // layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+            delete data['commentCreateTime'];
+            delete data['replyCreateTime'];
+            $.post("/updateMem",data, function (s) {
+                layer.msg('数据修改成功', {icon: 1, time: false, shade: 0.8,time:1*1000});
+
+            });
+        });
+
+        form.on('switch(isupload)', function (data) {
+            var isupload = data.elem.checked ? 1 : 0; //1为已删除,0为未删除
+            var index = top.layer.msg('数据提交中，请稍候', {icon: 16, time: false, shade: 0.8});
+            $.post("/isDel",
+                {
+                    "commentId": data.value,
+                    "isupload": isupload
+                }, function (s) {
+                    setTimeout(function () {
+                        top.layer.close(index);
+                        form.render('select', 'isupload');
+                        layer.msg('数据修改成功', {icon: 1, time: false, shade: 0.8,time:1*1000});
+                    }, 500);
+                });
+        });
+
+        //监听工具条
+        table.on('tool(acmCommentList)', function(obj){
+            var data = obj.data, //获得当前行数据
+                layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+
+            switch (layEvent) {
+                case 'clear':
+                    layer.confirm('确定删除？',{icon:3, title:'提示信息'},function(index){
+                        console.log(data.id)
+                        $.post("/clear",
+                            {
+                                "commentId": data.id
+                            }, function (s) {
+                                layer.msg('数据删除成功', {icon: 1, time: false, shade: 0.8,time:1*1000});
+                            });
+                        layer.close(index);
+                        tableIns.reload();
+                    });
+                    break;
+                case 'toUp':
+                    layer.confirm('确定帮忙上传？',{icon:3, title:'提示信息'},function(index){
+                        // console.log(data.account)
+                        $.post("/todalao",
+                            {
+                                "username": data.account
+                            }, function (s) {
+                                console.log(s)
+                                if (s == 'Applied today'){
+                                    layer.msg('签到成功，这个用户已经签到过啦~', {icon: 1, time: false, shade: 0.8,time:1*1000});
+                                }else {
+                                    layer.msg('签到成功！', {icon: 1, time: false, shade: 0.8,time:1*1000});
+                                }
+
+                            });
+                        layer.close(index);
+                        tableIns.reload();
+                    });
+                    break;
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>
