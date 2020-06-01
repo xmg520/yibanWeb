@@ -50,4 +50,9 @@ public class MeberServiceImpl implements MeberService {
         return memberDao.clear(commentId);
     }
 
+    @Override
+    public boolean updateEndMemBer(Member member) {
+        return memberDao.updateEndMemBer(member);
+    }
+
 }

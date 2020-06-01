@@ -41,6 +41,7 @@ public class ShiroConfig {
         Map<String,String> filerMap = new LinkedHashMap<>();//顺序的map
         //如果没有拦截，默认会跳转到login.jsp，可以通过setLoginUrl设置登录页面
         filerMap.put("/","anon");
+        filerMap.put("/dalao","anon");
         filerMap.put("/login","anon");
         filerMap.put("/saveMem","anon");
         filerMap.put("/logout","anon");

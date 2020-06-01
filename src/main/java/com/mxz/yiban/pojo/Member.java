@@ -8,7 +8,18 @@ public class Member {
     private String passwd;
     private String name;
     private String city;
+    //是否帮忙签到
     private Integer isupload;
+    //是否已经签到 0 已签到 1 未签到
+    private Integer  isendupload;
+
+    public Integer getIsendupload() {
+        return isendupload;
+    }
+
+    public void setIsendupload(Integer isendupload) {
+        this.isendupload = isendupload;
+    }
 
     public Member(Integer id, String account, String passwd, String name, String city, Integer isupload) {
         this.id = id;

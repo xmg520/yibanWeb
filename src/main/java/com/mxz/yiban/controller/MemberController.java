@@ -1,6 +1,7 @@
 package com.mxz.yiban.controller;
 
 import com.mxz.yiban.pojo.Member;
+import com.mxz.yiban.pojo.NoUpload;
 import com.mxz.yiban.service.MeberService;
 import com.mxz.yiban.utill.JsoupUtill;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,14 +83,39 @@ public class MemberController {
 
     @ResponseBody
     @RequestMapping("/todalao")
-    public String todalao(String username) throws IOException {
-        return JsoupUtill.login(username);
+    public String todalao(String username,String city) throws IOException {
+
+        try{
+            return JsoupUtill.login(username,city);
+
+        }catch (Exception e){
+            return "Applied today";
+        }
     }
 
+    @ResponseBody
+    @RequestMapping("/reloadEnd")
+    public boolean reloadEnd() {
+        try {
+            List<Member> allUser = this.meberService.findAll(0,100);
+            for (Member user:allUser) {
+                String acoount = user.getAccount();
+                if(JsoupUtill.isUpload(acoount)){
+                    user.setIsendupload(0);
+                }else {
+                    user.setIsendupload(1);
+                }
+                this.meberService.updateEndMemBer(user);
+            }
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 
     @ResponseBody
     @RequestMapping(value = {"/findAllMem"})
-    public Map<String,Object> findAllUser(HttpServletRequest request, @RequestParam(defaultValue = "1")int page, @RequestParam(defaultValue = "20")int limit, Model model){
+    public Map<String,Object> findAllUser(HttpServletRequest request, @RequestParam(defaultValue = "1")int page, @RequestParam(defaultValue = "20")int limit, Model model) {
         Map<String,Object> map = new HashMap<>();
 
         //设置简单反爬，python请求头 或 访问速度过快 提示页面访问过于频繁
@@ -136,4 +162,6 @@ public class MemberController {
         model.addAttribute("dataMap",map);
         return map;
     }
+
+
 }

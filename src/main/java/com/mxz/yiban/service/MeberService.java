@@ -22,4 +22,6 @@ public interface MeberService {
     boolean isDel(Integer commentId, Integer isupload);
 
     boolean clear(Integer commentId);
+
+    boolean updateEndMemBer(Member member);
 }

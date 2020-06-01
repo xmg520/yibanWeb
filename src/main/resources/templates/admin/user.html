@@ -22,6 +22,7 @@
 <div id="bttomTest" style="text-align: center">
     <a href="/dalao" target="_blank"><button type="button" class="layui-btn">在线签到</button></a>
     <a href="/noload" target="_blank"><button type="button" class="layui-btn layui-btn-normal">大佬记录</button></a>
+    <a href="#" id="reloaddalao"><button type="button" class="layui-btn layui-btn-warm">刷新签到状态</button></a>
 </div>
 <table class="layui-hide" id="test"></table>
 
@@ -33,10 +34,10 @@
 <script type="text/html" id="isDeletedTool">
     {{#  if(d.isupload == 1){ }}
     <input type="checkbox" name="isupload" lay-skin="switch" value="{{d.id}}"
-           lay-text="不帮签|已帮签" lay-filter="isupload" checked>
+           lay-text="不帮签|已帮签" lay-filter="isupload" checked onclick="return false;">
     {{#  } else { }}
     <input type="checkbox" name="isupload" lay-skin="switch" value="{{d.id}}"
-           lay-text="不帮签|已帮签" lay-filter="isupload">
+           lay-text="不帮签|已帮签" lay-filter="isupload" onclick="return false;">
     {{#  } }}
 </script>
 
@@ -45,12 +46,56 @@
     <a class="layui-btn layui-btn-sm layui-btn-danger" lay-event="clear">删除</a>
 </script>
 
+<script type="text/html" id="isEndUpdate">
+    {{#  if(d.isendupload == 1){ }}
+    <input type="checkbox" name="isendupload" lay-skin="switch" value="{{d.id}}"
+           lay-text="未签到|已签到" lay-filter="isendupload" checked disabled="disabled">
+    {{#  } else { }}
+    <input type="checkbox" name="isendupload" lay-skin="switch" value="{{d.id}}"
+           lay-text="未签到|已签到" lay-filter="isendupload" disabled="disabled">
+    {{#  } }}
+</script>
+
+
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery-1.8.3.js}"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 
 
+<script type="text/javascript">
 
+
+    layui.use(['form', 'layer', 'table'], function () {
+        $("#reloaddalao").click(function () {
+            reloadDalao();
+        });
+        window.reloadDalao = function() {
+            layer.confirm('是否刷新,刷新需要一些时间？',{icon:3, title:'提示信息'},function(index){
+                var loadmsg = layer.msg('加载中...', { icon: 16, shade: [0.5, '#f5f5f5'], scrollbar: false, offset: '50%', time: 300000 })
+                $.post("/reloadEnd",
+                    {
+                        "id": "123"
+                    }, function (s) {
+                        console.log(s)
+                        if (s){
+                            layer.close(loadmsg)
+                            layer.msg('刷新成功', {icon: 1, time: false, shade: 0.8,time:1*1000});
+                            location.href = "/admin/user";
+                        }else {
+                            layer.close(loadmsg)
+                            layer.msg('刷新失败，请联系管理员！', {icon: 1, time: false, shade: 0.8,time:1*1000});
+                            location.href = "/admin/user";
+                        }
+
+                    });
+                layer.close(index);
+            });
+        }
+    });
+
+
+
+</script>
 <script type="text/javascript" th:inline="none">
     layui.use(['form', 'layer', 'table'], function () {
         var form = layui.form,
@@ -76,6 +121,7 @@
                 , {field: 'name', title: '姓名', width:80, edit: 'text'}
                 , {field: 'city', title: '所在城市', edit: 'text', minWidth: 100}
                 , {field: 'isupload', title: '是否帮忙签到', align: 'center',sort:"true" , unresize: "true",templet: '#isDeletedTool'},
+                , {field: 'isendupload', title: '签到状态', align: 'center',sort:"true" , unresize: "true",templet: '#isEndUpdate'},
                 {title: '操作', align: "center", unresize: "true", toolbar: "#acmListBar"}
             ]]
         });
@@ -134,9 +180,9 @@
                         // console.log(data.account)
                         $.post("/todalao",
                             {
-                                "username": data.account
+                                "username": data.account,
+                                "city":data.city
                             }, function (s) {
-                                console.log(s)
                                 if (s == 'Applied today'){
                                     layer.msg('签到成功，这个用户已经签到过啦~', {icon: 1, time: false, shade: 0.8,time:1*1000});
                                 }else {

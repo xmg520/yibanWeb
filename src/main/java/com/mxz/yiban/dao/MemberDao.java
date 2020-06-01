@@ -27,4 +27,7 @@ public interface MemberDao {
 
     @Delete("delete from member where id = #{commentId}")
     boolean clear(Integer commentId);
+
+    @Update("update member set isendupload = #{isendupload}  where id = #{id}")
+    boolean updateEndMemBer(Member member);
 }
