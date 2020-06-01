@@ -5,7 +5,7 @@ __author__ = 'Mzx'
 import requests,pymysql,time,json
 
 # 数据库连接信息
-conn = pymysql.connect(host='118.31.22.202',user='root',password='qweqwe520',database='yiban',port=9527)
+conn = pymysql.connect(host='118.31.22.111',user='qweqwe',password='root',database='yiban',port=3306)
 
 cursor = conn.cursor()
 
@@ -47,50 +47,6 @@ def create_log():
         conn.close()
 
 
-    weixin_context = ""
-
-    with open('yiban.log','a',encoding='utf-8',newline='') as fp:
-
-        fp.write("时间："+time.strftime("%Y-%m-%d %H:%M:%S",time.localtime())+"\n")
-        fp.write("已完成人员：\n")
-        weixin_context += ("时间：" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + "\n"+"已完成人员：\n")
-        for name in nice_names:
-            fp.write(name+"\n")
-            weixin_context += (name+"\n")
-        fp.write("未及时完成人员：\n")
-        weixin_context += ("未及时完成人员：\n")
-        for name in forget_names:
-            fp.write(name+"\n")
-            weixin_context += (name+"\n")
-        weixin_context += ("*"*10)
-        fp.write("*"*10+"\n\n")
-    # print(weixin_context)
-
-    # 微信公众号发送信息
-    url_token = 'https://api.weixin.qq.com/cgi-bin/token?'
-    res = requests.get(url=url_token, params={
-        "grant_type": 'client_credential',
-        'appid': "wx352070fe7a5943c8",  # 这里填写上面获取到的appID
-        'secret': "9682cfae67d0bb35c1d282a614b2a195",  # 这里填写上面获取到的appsecret
-    }).json()
-    token = res.get('access_token')
-    # print(res)
-
-    url_msg = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?'
-    body = {
-        "touser": "omhBwwcpobS26WuH9Eb3SDHiBGZo",  # 这里必须是关注公众号测试账号后的用户id
-        "msgtype": "text",
-        "text": {
-            "content": weixin_context
-        }
-    }
-
-    res = requests.post(url=url_msg, params={
-        'access_token': token  # 这里是我们上面获取到的token
-    }, data=json.dumps(body, ensure_ascii=False).encode('utf-8'))
-
-
-
 # 数据库查询模块
 def py_user():
     cursor.execute(sql)
@@ -128,7 +84,6 @@ def up_mes(city,name):
 
     response = session.post(url=up_url,data=data,headers=headers)
 
-    print(response.text)
     if response.text == "Applied today":
         nice_names.append(name)
     else:
